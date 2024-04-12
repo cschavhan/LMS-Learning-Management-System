@@ -48,7 +48,11 @@ const userSchema = new mongoose.Schema(
       enum: ["USER", "ADMIN"],
       default: "USER",
     },
+
+    forgotPasswordToken: String,
+    forgotPasswordExpiry: Date,
   },
+
   { timestamps: true }
 );
 
@@ -57,11 +61,12 @@ userSchema.pre("save", async function (next) {
     return next();
   }
   this.password = await bcryptjs.hash(this.password, 10);
+  next();
 });
 
 userSchema.methods = {
-  generateJwtToken: async function () {
-    return await jwt.sign(
+  generateJwtToken: function () {
+    return jwt.sign(
       {
         id: this._id,
         email: this.email,
