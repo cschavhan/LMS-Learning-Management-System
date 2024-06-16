@@ -41,7 +41,7 @@ function AboutUs() {
             celebrities.map((celebrity) => (
               <CarouselSlide
                 {...celebrity}
-                key={celebrity.slidNumber}
+                key={celebrity.slideNumber}
                 totalSlides={celebrities.length}
               />
             ))}

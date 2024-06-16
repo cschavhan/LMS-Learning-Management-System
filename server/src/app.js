@@ -2,12 +2,22 @@ import express from "express";
 import morgan from "morgan";
 import userRoutes from "../routes/user.routes.js";
 import errorMiddleware from "../middlewares/error.middleware.js";
+import cors from "cors";
 import { config } from "dotenv";
 config();
 const app = express();
 
 // middleware
+//Built-in
 app.use(express.json());
+
+//Third-party
+app.use(
+  cors({
+    origin: [process.env.FRONTEND_URL],
+    credentials: true,
+  })
+);
 app.use(morgan("dev"));
 
 // route
