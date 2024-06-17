@@ -73,3 +73,34 @@ export const register = async (req, res, next) => {
     user,
   });
 };
+
+// login
+export const login = async (req, res, next) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return next(new AppError("All fields are required", 400));
+    }
+
+    const user = await User.findOne({
+      email,
+    }).select("+password");
+
+    if (!user || !(await user.comparePassword(password))) {
+      return next(new AppError("Email or Password does not match", 400));
+    }
+
+    const token = await user.generateJwtToken();
+    user.password = undefined;
+
+    res.cookie("token", token, cookieOptions);
+    res.status(200).json({
+      success: true,
+      message: "User logged in successfully",
+      user,
+    });
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
+};
