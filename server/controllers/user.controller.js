@@ -118,3 +118,19 @@ export const logout = (req, res, next) => {
     message: "User logout successfully",
   });
 };
+
+// get profile
+export const getProfile = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const user = await User.findById(userId);
+
+    res.status(200).json({
+      success: true,
+      message: "User details",
+      user,
+    });
+  } catch (error) {
+    return next(new AppError("Failed to fetch user details", 500));
+  }
+};

@@ -3,6 +3,7 @@ import morgan from "morgan";
 import userRoutes from "../routes/user.routes.js";
 import errorMiddleware from "../middlewares/error.middleware.js";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { config } from "dotenv";
 config();
 const app = express();
@@ -18,6 +19,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(cookieParser());
 app.use(morgan("dev"));
 
 // route
