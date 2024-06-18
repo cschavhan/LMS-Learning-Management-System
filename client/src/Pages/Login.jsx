@@ -22,7 +22,7 @@ function Login() {
     });
   };
 
-  // create new account
+  // login the user
   const onLogin = async (e) => {
     e.preventDefault();
 
