@@ -59,13 +59,11 @@ function HomeLayouts({ children }) {
               <Link to="/">Home</Link>
             </li>
 
-            {isLoggedIn &&
-              role ===
-                "ADMIN"(
-                  <li>
-                    <Link to="/admin/dashboard">Admin Dashboard</Link>
-                  </li>
-                )}
+            {isLoggedIn && role === "ADMIN" && (
+              <li>
+                <Link to="/admin/dashboard">Admin Dashboard</Link>
+              </li>
+            )}
 
             {isLoggedIn && role === "ADMIN" && (
               <li>
@@ -100,7 +98,7 @@ function HomeLayouts({ children }) {
             )}
 
             {isLoggedIn && (
-              <li className="bsolute bottom-4 w-[90%]">
+              <li className="absolute bottom-4 w-[90%]">
                 <div className="w-full flex items-center justify-center gap-1">
                   <button className="bg-pink-500 px-4 py-1 font-semibold rounded-md w-full text-black">
                     <Link to="/user/profile">Profile</Link>
