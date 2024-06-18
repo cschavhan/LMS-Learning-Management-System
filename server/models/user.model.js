@@ -35,12 +35,8 @@ const userSchema = new mongoose.Schema(
     },
 
     avatar: {
-      public_id: {
-        type: String,
-      },
-      secure_url: {
-        type: String,
-      },
+      type: String, // cloudinary url
+      required: true,
     },
 
     role: {
