@@ -5,6 +5,7 @@ import AboutUs from "./Pages/AboutUs";
 import NotFound from "./Pages/NotFound";
 import Singup from "./Pages/Singup";
 import Login from "./Pages/Login";
+import Denied from "./Pages/Denied";
 
 function App() {
   return (
@@ -12,6 +13,8 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutUs />} />
+
+        <Route path="/denied" element={<Denied />} />
 
         <Route path="/signup" element={<Singup />} />
         <Route path="/login" element={<Login />} />
