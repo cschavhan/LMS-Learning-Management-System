@@ -6,6 +6,7 @@ import NotFound from "./Pages/NotFound";
 import Singup from "./Pages/Singup";
 import Login from "./Pages/Login";
 import Denied from "./Pages/Denied";
+import RequireAuth from "./Componenats/Auth/RequireAuth";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
 
         <Route path="/signup" element={<Singup />} />
         <Route path="/login" element={<Login />} />
+
+        <Route element={<RequireAuth allowedRoles={["ADMIN"]} />}></Route>
 
         <Route path="*" element={<NotFound />} />
       </Routes>
