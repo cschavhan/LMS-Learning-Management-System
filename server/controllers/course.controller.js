@@ -1,6 +1,7 @@
 import Course from "../models/course.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import AppError from "../utils/error.utils.js";
+import cloudinary from "cloudinary";
 
 export const getAllCourses = async (req, res, next) => {
   try {
@@ -80,5 +81,62 @@ export const createCourses = async (req, res, next) => {
     });
   } catch (error) {
     return next(new AppError("Course failed to create", 500));
+  }
+};
+
+// update course
+export const updateCourse = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { title, description, category, createdBy } = req.body;
+
+    if (!title || !description || !category || !createdBy) {
+      return next(new AppError("All fields are required", 400));
+    }
+
+    const thumbnailLocalPath = req.file?.path;
+    if (!thumbnailLocalPath) {
+      return next(new AppError("thumbnail file is missing", 400));
+    }
+
+    //delete the old file
+    if (req.params?.thumbnail) {
+      await cloudinary.v2.uploader.destroy(req.params?.thumbnail);
+    }
+
+    //update the new file
+    const thumbnail = await uploadOnCloudinary(thumbnailLocalPath);
+    if (!thumbnail || !thumbnail.url) {
+      return next(new AppError("thumbnail file is required", 400));
+    }
+
+    const course = await Course.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          title,
+          description,
+          category,
+          createdBy,
+          thumbnail: thumbnail.url,
+        },
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!course) {
+      return next(
+        new AppError("Failed to update the course,please try again", 400)
+      );
+    }
+
+    await course.save();
+    res.status(200).json({
+      success: true,
+      message: "Course updated successfully",
+      course,
+    });
+  } catch (error) {
+    return next(new AppError(error.message, 500));
   }
 };
