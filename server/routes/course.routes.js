@@ -2,6 +2,7 @@ import express from "express";
 import { authorizedRoles, isLoggedIn } from "../middlewares/auth.middleware.js";
 import upload from "../middlewares/multer.middleware.js";
 import {
+  addLecturesToCourseById,
   createCourses,
   deleteCourse,
   getAllCourses,
@@ -28,5 +29,14 @@ router.put(
   updateCourse
 );
 router.delete("/:id", isLoggedIn, authorizedRoles("ADMIN"), deleteCourse);
+
+// lectures
+router.post(
+  "/:id",
+  isLoggedIn,
+  authorizedRoles("ADMIN"),
+  upload.single("lectureThumbnail"),
+  addLecturesToCourseById
+);
 
 export default router;

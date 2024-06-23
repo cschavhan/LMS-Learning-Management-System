@@ -155,3 +155,50 @@ export const deleteCourse = async (req, res, next) => {
     return next(new AppError(error.message, 500));
   }
 };
+
+//add lecture to course by id
+export const addLecturesToCourseById = async (req, res, next) => {
+  try {
+    const { title, description } = req.body;
+    const { id } = req.params;
+
+    if (!title || !description) {
+      return next(new AppError("All fields are required", 400));
+    }
+
+    const course = await Course.findById(id);
+    if (!course) {
+      return next(new AppError("course not exist with given id", 400));
+    }
+
+    const lectureThumbnailLocalPath = req.file?.path;
+    if (!lectureThumbnailLocalPath) {
+      return next(new AppError("lecture thumbnail file missing", 400));
+    }
+
+    const lectureThumbnail = await uploadOnCloudinary(
+      lectureThumbnailLocalPath
+    );
+    if (!lectureThumbnail) {
+      return next(new AppError("lecture thumbnail file is required", 400));
+    }
+
+    const lectureData = {
+      title,
+      description,
+      lectureThumbnail: lectureThumbnail.url,
+    };
+
+    course.lectures.push(lectureData);
+    course.numberOfLectures = course.lectures.length;
+
+    await course.save();
+    res.status(200).json({
+      success: true,
+      message: "Lecture added to course successfully",
+      course,
+    });
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
+};
