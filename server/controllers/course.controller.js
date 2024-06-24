@@ -202,3 +202,40 @@ export const addLecturesToCourseById = async (req, res, next) => {
     return next(new AppError(error.message, 500));
   }
 };
+
+// delete lecture from the course
+export const removeLectureByCourseId = async (req, res, next) => {
+  try {
+    const { courseId, lectureId } = req.params;
+    console.log(`courseid is ${courseId} : lectureid is ${lectureId}`);
+
+    if (!courseId || !lectureId) {
+      return next(new AppError("courseId and lectureId are required", 400));
+    }
+
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return next(new AppError("course not found with the given id", 404));
+    }
+
+    const lectureIndex = course.lectures.findIndex((lecture) => {
+      return lecture._id.toString() === lectureId;
+    });
+
+    if (lectureIndex === -1) {
+      return next(new AppError("Lecture not found with the given ID", 404));
+    }
+
+    course.lectures.splice(lectureIndex, 1);
+    course.numberOfLectures = course.lectures.length;
+
+    await course.save();
+    res.status(200).json({
+      success: true,
+      message: "Lecture deleted from course successfully",
+      course,
+    });
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
+};

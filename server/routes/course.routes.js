@@ -7,6 +7,7 @@ import {
   deleteCourse,
   getAllCourses,
   getLecturesByCourseId,
+  removeLectureByCourseId,
   updateCourse,
 } from "../controllers/course.controller.js";
 
@@ -20,7 +21,6 @@ router.post(
   createCourses
 );
 router.get("/", getAllCourses);
-router.get("/:id", isLoggedIn, getLecturesByCourseId);
 router.put(
   "/:id",
   isLoggedIn,
@@ -31,12 +31,19 @@ router.put(
 router.delete("/:id", isLoggedIn, authorizedRoles("ADMIN"), deleteCourse);
 
 // lectures
+router.get("/:id", isLoggedIn, getLecturesByCourseId);
 router.post(
   "/:id",
   isLoggedIn,
   authorizedRoles("ADMIN"),
   upload.single("lectureThumbnail"),
   addLecturesToCourseById
+);
+router.delete(
+  "/:courseId/:lectureId",
+  isLoggedIn,
+  authorizedRoles("ADMIN"),
+  removeLectureByCourseId
 );
 
 export default router;
