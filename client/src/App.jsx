@@ -9,6 +9,7 @@ import Denied from "./Pages/Denied";
 import RequireAuth from "./Componenats/Auth/RequireAuth";
 import Profile from "./Pages/User/Profile";
 import EditProfile from "./Pages/User/EditProfile";
+import CourseList from "./Pages/Course/CourseList";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutUs />} />
+        <Route path="/courses" element={<CourseList />} />
 
         <Route path="/denied" element={<Denied />} />
 
