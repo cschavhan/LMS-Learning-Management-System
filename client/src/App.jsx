@@ -11,6 +11,7 @@ import Profile from "./Pages/User/Profile";
 import EditProfile from "./Pages/User/EditProfile";
 import CourseList from "./Pages/Course/CourseList";
 import CourseDescription from "./Pages/Course/CourseDescription";
+import CreateCourse from "./Pages/Course/CreateCourse";
 
 function App() {
   return (
@@ -27,7 +28,9 @@ function App() {
         <Route path="/signup" element={<Singup />} />
         <Route path="/login" element={<Login />} />
 
-        <Route element={<RequireAuth allowedRoles={["ADMIN"]} />}></Route>
+        <Route element={<RequireAuth allowedRoles={["ADMIN"]} />}>
+          <Route path="/course/create" element={<CreateCourse />} />
+        </Route>
 
         <Route element={<RequireAuth allowedRoles={["ADMIN", "USER"]} />}>
           <Route path="/user/profile" element={<Profile />} />
