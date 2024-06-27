@@ -53,6 +53,27 @@ export const addCourseLectures = createAsyncThunk(
   }
 );
 
+// delete course lectures
+export const deleteCourseLectures = createAsyncThunk(
+  "course/lecture/delete",
+  async ({ courseid, lectureid }) => {
+    try {
+      const response = axiosInstance.delete(`/course/${courseid}/${lectureid}`);
+      toast.promise(response, {
+        loading: "Wait, lectures deleting is in process",
+        success: (response) => {
+          return response?.data?.message;
+        },
+        error: "Failed to delete lectures",
+      });
+
+      return (await response).data;
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  }
+);
+
 const lectureSlice = createSlice({
   name: "lecture",
   initialState,
