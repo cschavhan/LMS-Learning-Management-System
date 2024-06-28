@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import axiosInstance from "../../Helpers/axiosInstance";
 
 const initialState = {
-  lectureData: [],
+  lectures: [],
 };
 
 // get all lecture
@@ -81,16 +81,10 @@ const lectureSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getCourseLectures.fulfilled, (state, action) => {
-        console.log(action.payload);
-        if (action.payload) {
-          state.lectureData = action.payload?.lectureData;
-        }
+        state.lectures = action?.payload?.lectures;
       })
       .addCase(addCourseLectures.fulfilled, (state, action) => {
-        console.log(action.payload);
-        if (action.payload) {
-          state.lectureData = action.payload?.course?.lectureData;
-        }
+        state.lectures = action.payload?.course?.lectures;
       });
   },
 });

@@ -12,6 +12,7 @@ import EditProfile from "./Pages/User/EditProfile";
 import CourseList from "./Pages/Course/CourseList";
 import CourseDescription from "./Pages/Course/CourseDescription";
 import CreateCourse from "./Pages/Course/CreateCourse";
+import DisplayLectures from "./Pages/Dashboard/DisplayLectures";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route element={<RequireAuth allowedRoles={["ADMIN", "USER"]} />}>
           <Route path="/user/profile" element={<Profile />} />
           <Route path="/user/editprofile" element={<EditProfile />} />
+          <Route path="/course/displaylectures" element={<DisplayLectures />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
