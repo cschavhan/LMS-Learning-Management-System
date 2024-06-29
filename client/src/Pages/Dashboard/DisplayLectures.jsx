@@ -86,7 +86,6 @@ function DisplayLectures() {
 
               {lectures &&
                 lectures.map((lecture, idx) => {
-                  console.log(lecture?._id);
                   return (
                     <li className="space-y-2" key={lecture._id}>
                       <p

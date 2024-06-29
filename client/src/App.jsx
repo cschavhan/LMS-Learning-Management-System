@@ -13,6 +13,7 @@ import CourseList from "./Pages/Course/CourseList";
 import CourseDescription from "./Pages/Course/CourseDescription";
 import CreateCourse from "./Pages/Course/CreateCourse";
 import DisplayLectures from "./Pages/Dashboard/DisplayLectures";
+import AddLecture from "./Pages/Dashboard/AddLecture";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
 
         <Route element={<RequireAuth allowedRoles={["ADMIN"]} />}>
           <Route path="/course/create" element={<CreateCourse />} />
+          <Route path="/course/addlecture" element={<AddLecture />} />
         </Route>
 
         <Route element={<RequireAuth allowedRoles={["ADMIN", "USER"]} />}>
