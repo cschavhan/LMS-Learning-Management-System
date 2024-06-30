@@ -45,6 +45,11 @@ const userSchema = new mongoose.Schema(
       default: "USER",
     },
 
+    subscription: {
+      id: String,
+      status: String,
+    },
+
     forgotPasswordToken: String,
     forgotPasswordExpiry: Date,
   },
