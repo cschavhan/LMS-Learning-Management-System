@@ -1,5 +1,9 @@
 import express from "express";
-import { authorizedRoles, isLoggedIn } from "../middlewares/auth.middleware.js";
+import {
+  authorizedRoles,
+  authorizedSubscriber,
+  isLoggedIn,
+} from "../middlewares/auth.middleware.js";
 import upload from "../middlewares/multer.middleware.js";
 import {
   addLecturesToCourseById,
@@ -31,7 +35,7 @@ router.put(
 router.delete("/:id", isLoggedIn, authorizedRoles("ADMIN"), deleteCourse);
 
 // lectures
-router.get("/:id", isLoggedIn, authorizedRoles, getLecturesByCourseId);
+router.get("/:id", isLoggedIn, authorizedSubscriber, getLecturesByCourseId);
 router.post(
   "/:id",
   isLoggedIn,
