@@ -24,3 +24,13 @@ export const authorizedRoles =
     }
     next();
   };
+
+export const authorizedSubscriber = async (req, res, next) => {
+  const subscription = req.user.subscription;
+  const currentUserRoles = req.user.role;
+
+  if (currentUserRoles !== "ADMIN" && subscription.status !== "active") {
+    return next(new AppError("Please subscribe to access this route", 403));
+  }
+  next();
+};

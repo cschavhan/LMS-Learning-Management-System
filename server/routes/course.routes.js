@@ -31,7 +31,7 @@ router.put(
 router.delete("/:id", isLoggedIn, authorizedRoles("ADMIN"), deleteCourse);
 
 // lectures
-router.get("/:id", isLoggedIn, getLecturesByCourseId);
+router.get("/:id", isLoggedIn, authorizedRoles, getLecturesByCourseId);
 router.post(
   "/:id",
   isLoggedIn,
