@@ -16,6 +16,16 @@ const paymentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    finalMonths: {
+      type: Object,
+      default: {},
+    },
+
+    monthlySalesRecord: {
+      type: Array,
+      default: [],
+    },
   },
   { timestamps: true }
 );

@@ -119,3 +119,52 @@ export const cancelSubscription = async (req, res, next) => {
     return next(new AppError(error.message, 500));
   }
 };
+
+//all payments
+export const allPayments = async (req, res, next) => {
+  try {
+    const { count } = req.query;
+
+    const subscription = await razorpay.subscriptions.all({
+      count: count || 10,
+    });
+
+    // Fetch all payment records from the database
+    const payments = await Payment.find().limit(count || 10);
+
+    // Initialize finalMonths and monthlySalesRecord
+    const finalMonths = {};
+
+    const monthlySalesRecord = new Array(12).fill(0);
+
+    // Aggregate data from payment records
+    payments.forEach((payment) => {
+      // Aggregate finalMonths based on createdAt
+      const createdAt = new Date(payment.createdAt);
+      const monthName = createdAt.toLocaleString("default", { month: "long" });
+
+      if (!finalMonths[monthName]) {
+        finalMonths[monthName] = 0;
+      }
+      finalMonths[monthName] += 1;
+
+      // Aggregate monthlySalesRecord
+      payment.monthlySalesRecord.forEach((record, index) => {
+        if (monthlySalesRecord[index] === undefined) {
+          monthlySalesRecord[index] = 0;
+        }
+        monthlySalesRecord[index] += record;
+      });
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "All payments",
+      subscription,
+      finalMonths,
+      monthlySalesRecord,
+    });
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
+};
