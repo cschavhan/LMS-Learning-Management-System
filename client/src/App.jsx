@@ -14,6 +14,8 @@ import CourseDescription from "./Pages/Course/CourseDescription";
 import CreateCourse from "./Pages/Course/CreateCourse";
 import DisplayLectures from "./Pages/Dashboard/DisplayLectures";
 import AddLecture from "./Pages/Dashboard/AddLecture";
+import Checkout from "./Pages/Payment/Checkout";
+import CheckoutSuccess from "./Pages/Payment/CheckoutSuccess";
 
 function App() {
   return (
@@ -39,6 +41,8 @@ function App() {
           <Route path="/user/profile" element={<Profile />} />
           <Route path="/user/editprofile" element={<EditProfile />} />
           <Route path="/course/displaylectures" element={<DisplayLectures />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/checkout/success" element={<CheckoutSuccess />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />

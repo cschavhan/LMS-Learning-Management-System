@@ -2,6 +2,7 @@ import Payment from "../models/payment.model.js";
 import User from "../models/user.model.js";
 import razorpay from "../src/server.js";
 import AppError from "../utils/error.utils.js";
+import crypto from "crypto";
 
 export const getRazorpayApiKey = async (req, res, next) => {
   try {
@@ -31,6 +32,7 @@ export const buySubscription = async (req, res, next) => {
     const subscription = await razorpay.subscriptions.create({
       plan_id: process.env.RAZORPAY_PLAN_ID,
       customer_notify: 1,
+      total_count: 1,
     });
 
     user.subscription.id = subscription.id;
