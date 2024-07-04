@@ -32,7 +32,7 @@ export const buySubscription = async (req, res, next) => {
     const subscription = await razorpay.subscriptions.create({
       plan_id: process.env.RAZORPAY_PLAN_ID,
       customer_notify: 1,
-      total_count: 1,
+      total_count: 12,
     });
 
     user.subscription.id = subscription.id;
@@ -110,12 +110,11 @@ export const cancelSubscription = async (req, res, next) => {
 
     const subscription = await razorpay.subscriptions.cancel(subscribeId);
 
-    user.subscription.status = subscription.status || "inactive";
-
+    user.subscription.status = subscription.status;
     await user.save();
     res.status(200).json({
       success: true,
-      message: "Subscription cancle successfully",
+      message: "Subscription cancelled successfully",
     });
   } catch (error) {
     return next(new AppError(error.message, 500));
