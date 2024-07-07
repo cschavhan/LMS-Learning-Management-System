@@ -188,7 +188,7 @@ export const forgotPassword = async (req, res, next) => {
     await user.save();
 
     const resetPasswordUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-    console.log(resetPasswordUrl);
+
     const subject = "Reset password";
     const message = `You can reset your password by clicking <a href=${resetPasswordUrl} target="_blank">Reset your password</a>\n if the above link does not work for some reason then copy paste this line in new tab ${resetPasswordUrl}.\n if you have not requested this,kindly ignore.`;
 
@@ -236,6 +236,39 @@ export const resetPassword = async (req, res, next) => {
     user.forgotPasswordExpiry = undefined;
 
     await user.save();
+    res.status(200).json({
+      success: true,
+      message: "Password changed successfully",
+    });
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
+};
+
+// change password
+export const changePassword = async (req, res, next) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const { id } = req.user;
+
+    if (!oldPassword || !newPassword) {
+      return next(new AppError("All fields are required"));
+    }
+
+    const user = await User.findById(id).select("password");
+    if (!user) {
+      return next(new AppError("User does not exist", 400));
+    }
+
+    const isPasswordValid = await user.comparePassword(oldPassword);
+    if (!isPasswordValid) {
+      return next(new AppError("Invalid old password", 400));
+    }
+
+    user.password = newPassword;
+    await user.save();
+    user.password = undefined;
+
     res.status(200).json({
       success: true,
       message: "Password changed successfully",
