@@ -24,6 +24,7 @@ app.use(
 );
 
 app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 // route

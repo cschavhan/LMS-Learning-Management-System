@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import cloudinary from "cloudinary";
 import AppError from "../utils/error.utils.js";
+import crypto from "crypto";
 
 const cookieOptions = {
   maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -201,6 +202,42 @@ export const forgotPassword = async (req, res, next) => {
       user.forgotPasswordToken = undefined;
       return next(new AppError("Failed to send url", 500));
     }
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
+};
+
+// reset password
+export const resetPassword = async (req, res, next) => {
+  try {
+    const { resetToken } = req.params;
+    const { password } = req.body;
+
+    const forgotPasswordToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+
+    const user = await User.findOne({
+      forgotPasswordToken,
+      forgotPasswordExpiry: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return next(
+        new AppError("Token is invalid or expired, please try agian", 400)
+      );
+    }
+
+    user.password = password;
+    user.forgotPasswordToken = undefined;
+    user.forgotPasswordExpiry = undefined;
+
+    await user.save();
+    res.status(200).json({
+      success: true,
+      message: "Password changed successfully",
+    });
   } catch (error) {
     return next(new AppError(error.message, 500));
   }
