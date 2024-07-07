@@ -3,6 +3,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import cloudinary from "cloudinary";
 import AppError from "../utils/error.utils.js";
 import crypto from "crypto";
+import sendEmail from "../utils/sendEmail.js";
 
 const cookieOptions = {
   maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -187,6 +188,7 @@ export const forgotPassword = async (req, res, next) => {
     await user.save();
 
     const resetPasswordUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+    console.log(resetPasswordUrl);
     const subject = "Reset password";
     const message = `You can reset your password by clicking <a href=${resetPasswordUrl} target="_blank">Reset your password</a>\n if the above link does not work for some reason then copy paste this line in new tab ${resetPasswordUrl}.\n if you have not requested this,kindly ignore.`;
 
