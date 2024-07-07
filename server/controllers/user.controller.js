@@ -168,3 +168,40 @@ export const update = async (req, res, next) => {
     return next(new AppError("Failed the user updation", 500));
   }
 };
+
+// forgot password
+export const forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return next(new AppError("Email is required", 400));
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return next(new AppError("Email is not registered", 400));
+    }
+
+    const resetToken = await user.generatePasswordResetToken();
+    await user.save();
+
+    const resetPasswordUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+    const subject = "Reset password";
+    const message = `You can reset your password by clicking <a href=${resetPasswordUrl} target="_blank">Reset your password</a>\n if the above link does not work for some reason then copy paste this line in new tab ${resetPasswordUrl}.\n if you have not requested this,kindly ignore.`;
+
+    try {
+      await sendEmail(email, subject, message);
+
+      res.status(200).json({
+        success: true,
+        message: `Reset password token has been sent to ${email} successfully`,
+      });
+    } catch (error) {
+      user.forgotPasswordExpiry = undefined;
+      user.forgotPasswordToken = undefined;
+      return next(new AppError("Failed to send url", 500));
+    }
+  } catch (error) {
+    return next(new AppError(error.message, 500));
+  }
+};

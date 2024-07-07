@@ -1,6 +1,7 @@
 import express from "express";
 import upload from "../middlewares/multer.middleware.js";
 import {
+  forgotPassword,
   getProfile,
   login,
   logout,
@@ -16,5 +17,7 @@ router.post("/login", login);
 router.get("/logout", logout);
 router.get("/me", isLoggedIn, getProfile);
 router.put("/update", isLoggedIn, upload.single("avatar"), update);
+router.post("/reset", forgotPassword);
+// router.post("/reset/:resetToken", resetPassword);
 
 export default router;
