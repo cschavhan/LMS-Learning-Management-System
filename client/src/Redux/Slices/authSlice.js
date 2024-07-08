@@ -93,6 +93,25 @@ export const getUserData = createAsyncThunk("/auth/details", async () => {
   }
 });
 
+// change password
+export const changePassword = createAsyncThunk(
+  "auth/changepassword",
+  async (data) => {
+    try {
+      const res = axiosInstance.post("/user/change-password", data);
+      toast.promise(res, {
+        loading: "Wait ! Password changing is in process..!",
+        success: "Password changed successfully",
+        error: "Failed to change password",
+      });
+
+      return (await res).data;
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -128,6 +147,12 @@ const authSlice = createSlice({
           state.data = user;
           state.role = user.role || "";
         }
+      })
+      .addCase(changePassword.fulfilled, (state, action) => {
+        localStorage.clear();
+        state.isLoggedIn = false;
+        state.data = {};
+        state.role = "";
       });
   },
 });

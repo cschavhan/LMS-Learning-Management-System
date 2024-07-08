@@ -18,6 +18,7 @@ import Checkout from "./Pages/Payment/Checkout";
 import CheckoutSuccess from "./Pages/Payment/CheckoutSuccess";
 import CheckoutFailure from "./Pages/Payment/CheckoutFailure";
 import AdminDashboard from "./Pages/Dashboard/AdminDashboard";
+import ChangePassword from "./Pages/User/ChangePassword";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/checkout/success" element={<CheckoutSuccess />} />
           <Route path="/checkout/fail" element={<CheckoutFailure />} />
+          <Route path="/changepassword" element={<ChangePassword />} />
         </Route>
 
         <Route path="*" element={<NotFound />} />
