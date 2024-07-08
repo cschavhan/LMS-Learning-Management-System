@@ -101,6 +101,13 @@ function Login() {
             </Link>
           </p>
         </form>
+
+        <p
+          onClick={() => navigate("/forgot-password")}
+          className="absolute bottom-28 left-[450px] shadow-[0_0_10px_black] py-2 px-1 cursor-pointer rounded font-semibold text-lg text-white w-[30%]"
+        >
+          Forgot Password ?
+        </p>
       </div>
     </HomeLayouts>
   );

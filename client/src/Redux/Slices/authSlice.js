@@ -112,6 +112,43 @@ export const changePassword = createAsyncThunk(
   }
 );
 
+// forgot Password
+export const forgotPassword = createAsyncThunk(
+  "auth/forgot-password",
+  async (data) => {
+    try {
+      const res = axiosInstance.post("/user/reset", data);
+      toast.promise(res, {
+        loading: "Wait ! Verification link sending on your email.",
+        success: "Verification link send successfully",
+        error: "Failed send verification link",
+      });
+
+      return (await res).data;
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  }
+);
+
+// reset password
+export const resetPassword = createAsyncThunk(
+  "auth/reset-password",
+  async ({ resetToken, password }) => {
+    try {
+      const res = axiosInstance.post(`/user/reset/${resetToken}`, { password });
+      toast.promise(res, {
+        loading: "Wait ! Password reseting is in process.",
+        success: "Password reset successfully",
+        error: "Failed to reset password",
+      });
+      return (await res).data;
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,

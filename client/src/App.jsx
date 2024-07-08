@@ -19,6 +19,8 @@ import CheckoutSuccess from "./Pages/Payment/CheckoutSuccess";
 import CheckoutFailure from "./Pages/Payment/CheckoutFailure";
 import AdminDashboard from "./Pages/Dashboard/AdminDashboard";
 import ChangePassword from "./Pages/User/ChangePassword";
+import ForgotPassword from "./Pages/ForgotPassword";
+import ResetPassword from "./Pages/ResetPassword";
 
 function App() {
   return (
@@ -34,6 +36,9 @@ function App() {
 
         <Route path="/signup" element={<Singup />} />
         <Route path="/login" element={<Login />} />
+
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
 
         <Route element={<RequireAuth allowedRoles={["ADMIN"]} />}>
           <Route path="/course/create" element={<CreateCourse />} />
