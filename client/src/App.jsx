@@ -21,6 +21,7 @@ import AdminDashboard from "./Pages/Dashboard/AdminDashboard";
 import ChangePassword from "./Pages/User/ChangePassword";
 import ForgotPassword from "./Pages/ForgotPassword";
 import ResetPassword from "./Pages/ResetPassword";
+import Contact from "./Pages/Contact";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/courses" element={<CourseList />} />
+        <Route path="/contact" element={<Contact />} />
 
         <Route path="/denied" element={<Denied />} />
 
