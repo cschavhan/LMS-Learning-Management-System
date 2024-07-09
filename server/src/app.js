@@ -4,6 +4,7 @@ import userRoutes from "../routes/user.routes.js";
 import courseRoutes from "../routes/course.routes.js";
 import paymentRoutes from "../routes/payment.routes.js";
 import adminRoutes from "../routes/admin.routes.js";
+import contactRoutes from "../routes/contact.routes.js";
 import errorMiddleware from "../middlewares/error.middleware.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -32,6 +33,7 @@ app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/course", courseRoutes);
 app.use("/api/v1/payment", paymentRoutes);
 app.use("/api/v1/admin", adminRoutes);
+app.use("/api/v1/contact", contactRoutes);
 
 app.all("*", (req, res) => {
   res.status(404).send("OOPS!! 404 page not found");
